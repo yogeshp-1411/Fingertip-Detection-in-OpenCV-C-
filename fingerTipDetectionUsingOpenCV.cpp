@@ -80,8 +80,8 @@ int main()
 		inRange(imgHSV, Scalar(iLowH, iLowS, iLowV), Scalar(iHighH, iHighS, iHighV), imgSegmented);
 
 		//Morphological filters
-		dilate(imgSegmented, imgSegmented, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-		erode(imgSegmented, imgSegmented, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+		dilate(imgSegmented, imgSegmented, getStructuringElement(MORPH_ELLIPSE, Size(10, 10)));
+		erode(imgSegmented, imgSegmented, getStructuringElement(MORPH_ELLIPSE, Size(7, 7)));
 
 		threshold(imgSegmented, img, threshold_value, max_BINARY_value, threshold_type);
 
