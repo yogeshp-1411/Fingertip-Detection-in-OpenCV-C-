@@ -41,7 +41,6 @@ int threshold_type = 0; //binary threshold
 int const max_BINARY_value = 255;
 
 Mat img, imgSegmented, frame;
-Mat drawingMaxArea = Mat::zeros(img.rows, img.cols, CV_8UC1);
 
 int main()
 {
@@ -104,13 +103,12 @@ void fingerTipDetection(Mat img)
 	drawContours(drawing, contours, maxContourAreaLoc, Scalar(255, 255, 255), CV_FILLED);
 
 	std::vector<std::vector<cv::Point> > contoursMaxArea;	//contoursDrawing;
-	drawingMaxArea = drawing.clone();	//drawingContours 
 
-	int k = drawingMaxArea.rows;
+	int k = drawing.rows;
 	while (contoursMaxArea.size() <= 4 && k > 0)
 	{
-		line(drawingMaxArea, Point(0, k), Point(drawingMaxArea.cols, k), Scalar(0, 0, 0), 5, 8, 0);
-		findContours(drawingMaxArea, contoursMaxArea, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
+		line(drawing, Point(0, k), Point(drawing.cols, k), Scalar(0, 0, 0), 5, 8, 0);
+		findContours(drawing, contoursMaxArea, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
 		k--;
 
 		if (contoursMaxArea.size() <= 4)
@@ -121,7 +119,7 @@ void fingerTipDetection(Mat img)
 			{
 				if (contourArea(contoursMaxArea[i]) > 3900 && contourArea(contoursMaxArea[i]) < 4000 && contoursMaxArea[i].size() > 180)
 				{
-					drawContours(drawingMaxArea, contoursMaxArea, i, Scalar(255, 255, 255));
+					drawContours(drawing, contoursMaxArea, i, Scalar(255, 255, 255));
 
 					minRect[i] = minAreaRect(Mat(contoursMaxArea[i]));
 					Point2f rectPoints[4];
@@ -146,7 +144,7 @@ void fingerTipDetection(Mat img)
 			}
 		}
 	}
-	imshow("Fingers Seperated", drawingMaxArea);
+	imshow("Fingers Seperated", drawing);
 	imshow("Output", frame);
 }
 int findMaxContourArea(vector<vector<Point> > contours)
